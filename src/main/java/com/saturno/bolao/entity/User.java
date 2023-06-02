@@ -3,6 +3,8 @@ package com.saturno.bolao.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.hateoas.RepresentationModel;
+
 import java.io.Serial;
 import java.io.Serializable;
 
@@ -10,7 +12,7 @@ import java.io.Serializable;
 @Setter
 @Entity
 @Table(name="user")
-public class User implements Serializable {
+public class User extends RepresentationModel<User> implements Serializable {
 
     @Serial
     private static final long serialVersionUID = -2751982117362493029L;

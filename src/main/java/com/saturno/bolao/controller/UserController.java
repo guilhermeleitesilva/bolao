@@ -1,10 +1,9 @@
 package com.saturno.bolao.controller;
 
-import com.saturno.bolao.dto.UserDto;
+import com.saturno.bolao.dto.UserRecordDto;
 import com.saturno.bolao.entity.User;
 import com.saturno.bolao.service.UserService;
 import jakarta.validation.Valid;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -13,6 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/users")
@@ -26,21 +28,27 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> save(@RequestBody @Valid UserDto userDto) {
-        if (userService.existsUsername(userDto.getUsername())) {
+    public ResponseEntity<Object> save(@RequestBody @Valid UserRecordDto userRecordDto) {
+        if (userService.existsUsername(userRecordDto.username())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflict: Username is already in use!");
         }
-        if (userService.existsEmail(userDto.getEmail())) {
+        if (userService.existsEmail(userRecordDto.email())) {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflict: Email is already in use!");
         }
 
-        User user = new User();
-        BeanUtils.copyProperties(userDto, user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.save(user));
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.save(userRecordDto.convertToUser()));
     }
 
     @GetMapping
     public ResponseEntity<Page<User>> getAllUsers(@PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+
+        Page<User> users = userService.findAll(pageable);
+
+        if (!users.isEmpty()) {
+            for (User user : users.getContent()) {
+                user.add(linkTo(methodOn(UserController.class).getAllUsers(pageable)).withSelfRel());
+            }
+        }
         return ResponseEntity.status(HttpStatus.OK).body(userService.findAll(pageable));
     }
 
@@ -48,7 +56,7 @@ public class UserController {
     public ResponseEntity<Object> getUser(@PathVariable(value = "id") Long id) {
         Optional<User> userOptional = userService.findById(id);
 
-        if (!userOptional.isPresent()) {
+        if (userOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
 
@@ -59,7 +67,7 @@ public class UserController {
     public ResponseEntity delete(@PathVariable(value = "id") Long id) {
         Optional<User> userOptional = userService.findById(id);
 
-        if (!userOptional.isPresent()) {
+        if (userOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
         userService.delete(userOptional.get());
@@ -68,15 +76,14 @@ public class UserController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> update(@PathVariable(value = "id") Long id,
-                                       @RequestBody @Valid UserDto userDto) {
+                                       @RequestBody @Valid UserRecordDto userRecordDto) {
         Optional<User> userOptional = userService.findById(id);
 
-        if (!userOptional.isPresent()) {
+        if (userOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
         }
 
-        User user = new User();
-        BeanUtils.copyProperties(userDto, user);
+        User user = userRecordDto.convertToUser();
         user.setId(userOptional.get().getId());
 
         return ResponseEntity.status(HttpStatus.OK).body(userService.save(user));
