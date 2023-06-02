@@ -3,6 +3,7 @@ package com.saturno.bolao.controller;
 import com.saturno.bolao.dto.UserDto;
 import com.saturno.bolao.entity.User;
 import com.saturno.bolao.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,13 +12,10 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class UserController {
 
