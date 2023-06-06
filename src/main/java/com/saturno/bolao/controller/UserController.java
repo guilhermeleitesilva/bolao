@@ -29,13 +29,6 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<Object> save(@RequestBody @Valid UserRecordDto userRecordDto) {
-        if (userService.existsUsername(userRecordDto.username())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflict: Username is already in use!");
-        }
-        if (userService.existsEmail(userRecordDto.email())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Conflict: Email is already in use!");
-        }
-
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.save(userRecordDto.convertToUser()));
     }
 
@@ -53,40 +46,23 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> getUser(@PathVariable(value = "id") Long id) {
-        Optional<User> userOptional = userService.findById(id);
-
-        if (userOptional.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
-        }
-
-        return ResponseEntity.status(HttpStatus.OK).body(userOptional.get());
+    public ResponseEntity<User> getUser(@PathVariable(value = "id") Long id) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.findById(id));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable(value = "id") Long id) {
-        Optional<User> userOptional = userService.findById(id);
-
-        if (userOptional.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
-        }
-        userService.delete(userOptional.get());
+        userService.delete(id);
         return ResponseEntity.status(HttpStatus.OK).body("User deleted successfully!");
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Object> update(@PathVariable(value = "id") Long id,
-                                       @RequestBody @Valid UserRecordDto userRecordDto) {
-        Optional<User> userOptional = userService.findById(id);
-
-        if (userOptional.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
-        }
+                                         @RequestBody @Valid UserRecordDto userRecordDto) {
 
         User user = userRecordDto.convertToUser();
-        user.setId(userOptional.get().getId());
+        user.setId(id);
 
-        return ResponseEntity.status(HttpStatus.OK).body(userService.save(user));
+        return ResponseEntity.status(HttpStatus.OK).body(userService.update(user));
     }
-
 }

@@ -1,0 +1,31 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002_create_championship_table
+      author: guilherme
+      changes:
+        - createTable:
+            tableName: championship
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: nickname
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: create_date
+                  type: timestamp
+                  constraints:
+                    nullable: false
+                  defaultValueDate: CURRENT_TIMESTAMP

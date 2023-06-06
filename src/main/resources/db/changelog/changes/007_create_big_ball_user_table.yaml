@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: 007_create_big_ball_user_table
+      author: guilherme
+      changes:
+        - createTable:
+            tableName: big_ball_user
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: big_ball_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_big_ball_big_ball_user
+                    references: big_ball(id)
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_user_big_ball_user
+                    references: user(id)

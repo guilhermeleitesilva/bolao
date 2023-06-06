@@ -1,0 +1,17 @@
+databaseChangeLog:
+  - include:
+      file: /db/changelog/changes/001_create_user_table.yaml
+  - include:
+      file: /db/changelog/changes/002_create_championship_table.yaml
+  - include:
+      file: /db/changelog/changes/003_create_team_table.yaml
+  - include:
+      file: /db/changelog/changes/004_create_big_ball_table.yaml
+  - include:
+      file: /db/changelog/changes/005_create_game_table.yaml
+  - include:
+      file: /db/changelog/changes/006_create_championship_team_table.yaml
+  - include:
+      file: /db/changelog/changes/007_create_big_ball_user_table.yaml
+  - include:
+      file: /db/changelog/changes/008_create_bet_table.yaml

@@ -1,0 +1,33 @@
+databaseChangeLog:
+  - changeSet:
+      id: 004_create_team_table
+      author: guilherme
+      changes:
+        - createTable:
+            tableName: big_ball
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: create_date
+                  type: timestamp
+                  constraints:
+                    nullable: false
+                  defaultValueDate: CURRENT_TIMESTAMP
+              - column:
+                  name: championship_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_championship_big_ball
+                    references: championship(id)

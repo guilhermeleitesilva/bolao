@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: 006_create_championship_team_table
+      author: guilherme
+      changes:
+        - createTable:
+            tableName: championship_team
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: team_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_team_championship_team
+                    references: team(id)
+              - column:
+                  name: championship_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_championship_championship_team
+                    references: championship(id)

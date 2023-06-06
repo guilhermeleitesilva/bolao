@@ -1,0 +1,57 @@
+databaseChangeLog:
+  - changeSet:
+      id: 005_create_game_table
+      author: guilherme
+      changes:
+        - createTable:
+            tableName: game
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: local
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: home_score
+                  type: int
+                  constraints:
+                    nullable: true
+              - column:
+                  name: visitor_score
+                  type: int
+                  constraints:
+                    nullable: true
+              - column:
+                  name: create_date
+                  type: timestamp
+                  constraints:
+                    nullable: false
+                  defaultValueDate: CURRENT_TIMESTAMP
+              - column:
+                  name: home_team_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_home_team
+                    references: team(id)
+              - column:
+                  name: visitor_team_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_visitor_team
+                    references: team(id)
+              - column:
+                  name: championship_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_championship_game
+                    references: championship(id)
