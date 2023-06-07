@@ -10,28 +10,25 @@ import java.io.Serializable;
 import java.time.Instant;
 
 @Entity
-@Getter
 @Setter
-@Table(name="user")
-public class User extends RepresentationModel<User> implements Serializable {
+@Getter
+@Table(name="big_ball")
+public class BigBall extends RepresentationModel<BigBall> implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = -2751982117362493029L;
+    private static final long serialVersionUID = 5158210939282253231L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(length = 50, nullable = false)
     private String name;
 
-    @Column(length = 50, unique = true, nullable = false)
-    private String email;
-
-    @Column(length = 20, unique = true, nullable = false)
-    private String username;
-
     private Instant createDate;
+
+    @ManyToOne
+    @JoinColumn(name = "championship_id")
+    private Championship championship;
 
 }

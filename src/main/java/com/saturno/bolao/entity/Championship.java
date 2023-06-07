@@ -8,15 +8,16 @@ import org.springframework.hateoas.RepresentationModel;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
-@Table(name="user")
-public class User extends RepresentationModel<User> implements Serializable {
+@Table(name="championship")
+public class Championship extends RepresentationModel<Championship> implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = -2751982117362493029L;
+    private static final long serialVersionUID = -85213475318139432L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,12 +27,16 @@ public class User extends RepresentationModel<User> implements Serializable {
     @Column(length = 50, nullable = false)
     private String name;
 
-    @Column(length = 50, unique = true, nullable = false)
-    private String email;
-
-    @Column(length = 20, unique = true, nullable = false)
-    private String username;
+    @Column(length = 20, nullable = false)
+    private String nickname;
 
     private Instant createDate;
+
+    @ManyToMany
+    @JoinTable(name = "championship_team",
+            joinColumns = @JoinColumn(name = "championship_id"),
+            inverseJoinColumns = @JoinColumn(name = "team_id"))
+    public List<Team> teams;
+
 
 }

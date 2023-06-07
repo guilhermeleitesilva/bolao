@@ -5,6 +5,8 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.BeanUtils;
 
+import java.time.Instant;
+
 public record UserRecordDto(@NotBlank(message = "Name is required")
                             String name,
                             @NotBlank(message = "Email is required")
@@ -15,6 +17,7 @@ public record UserRecordDto(@NotBlank(message = "Name is required")
     public User convertToUser(){
         User user = new User();
         BeanUtils.copyProperties(this, user);
+        user.setCreateDate(Instant.now());
         return user;
     }
 }

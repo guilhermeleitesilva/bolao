@@ -15,3 +15,5 @@ databaseChangeLog:
       file: /db/changelog/changes/007_create_big_ball_user_table.yaml
   - include:
       file: /db/changelog/changes/008_create_bet_table.yaml
+  - include:
+    file: /db/changelog/changes/009_create_stadium_table.yaml

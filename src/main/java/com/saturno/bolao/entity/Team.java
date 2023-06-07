@@ -10,13 +10,13 @@ import java.io.Serializable;
 import java.time.Instant;
 
 @Entity
-@Getter
 @Setter
-@Table(name="user")
-public class User extends RepresentationModel<User> implements Serializable {
+@Getter
+@Table(name="team")
+public class Team extends RepresentationModel<Team> implements Serializable {
 
     @Serial
-    private static final long serialVersionUID = -2751982117362493029L;
+    private static final long serialVersionUID = -921306399466046969L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,12 +26,10 @@ public class User extends RepresentationModel<User> implements Serializable {
     @Column(length = 50, nullable = false)
     private String name;
 
-    @Column(length = 50, unique = true, nullable = false)
-    private String email;
+    private String image;
 
-    @Column(length = 20, unique = true, nullable = false)
-    private String username;
+    @Column(length = 20, nullable = false)
+    private String nickname;
 
     private Instant createDate;
-
 }

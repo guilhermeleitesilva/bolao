@@ -14,8 +14,13 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: local
+                  name: stadium
                   type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: date
+                  type: timestamp
                   constraints:
                     nullable: false
               - column:
@@ -33,7 +38,6 @@ databaseChangeLog:
                   type: timestamp
                   constraints:
                     nullable: false
-                  defaultValueDate: CURRENT_TIMESTAMP
               - column:
                   name: home_team_id
                   type: bigint

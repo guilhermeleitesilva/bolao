@@ -23,7 +23,6 @@ databaseChangeLog:
                   type: timestamp
                   constraints:
                     nullable: false
-                  defaultValueDate: CURRENT_TIMESTAMP
               - column:
                   name: championship_id
                   type: bigint
